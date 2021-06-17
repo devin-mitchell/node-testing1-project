@@ -79,6 +79,8 @@ class Seasons {
    */
   constructor() {
     // ✨ initialize whatever properties are needed
+    this.seasons = ['summer', 'fall', 'winter', 'spring']
+    this.currentSeason = 0
   }
 
   /**
@@ -94,7 +96,12 @@ class Seasons {
    * seasons.next() // returns "summer"
    */
   next() {
-    // ✨ implement
+    if (this.currentSeason < 4) {
+      return this.seasons[this.currentSeason++]
+    } else {
+      this.currentSeason = 0
+      return this.seasons[this.currentSeason++]
+    }
   }
 }
 
@@ -108,7 +115,9 @@ class Car {
   constructor(name, tankSize, mpg) {
     this.odometer = 0 // car initilizes with zero miles
     this.tank = tankSize // car initiazes full of gas
-    // ✨ initialize whatever other properties are needed
+    this.tankSize = tankSize
+    this.name = name
+    this.mpg = mpg
   }
 
   /**
@@ -125,8 +134,17 @@ class Car {
    * focus.drive(200) // returns 600 (ran out of gas after 100 miles)
    */
   drive(distance) {
-    // ✨ implement
+    const availableMiles = this.tank * this.mpg
+    if (distance <= availableMiles) {
+      this.odometer += distance
+      this.tank -= (distance / this.mpg)
+    } else {
+      this.odometer += availableMiles
+      this.tank = 0
+    }
+    return this.odometer
   }
+
 
   /**
    * [Exercise 6C] Adds gallons to the tank
@@ -140,10 +158,14 @@ class Car {
    * focus.refuel(99) // returns 600 (tank only holds 20)
    */
   refuel(gallons) {
-    // ✨ implement
+    if (gallons <= this.tankSize - this.tank) {
+      this.tank += gallons 
+    } else {
+      this.tank = this.tankSize
+    }
+    return this.tank * this.mpg
   }
 }
-
 /**
  * [Exercise 7] Asynchronously resolves whether a number is even
  * @param {number} number - the number to test for evenness
@@ -163,8 +185,11 @@ class Car {
  *    // error.message is "number must be a number"
  * })
  */
-function isEvenNumberAsync(number) {
-  // ✨ implement
+async function isEvenNumberAsync(number) {
+  if (typeof number !== 'number' || isNaN(number)) {
+    throw new Error('number must be a number')
+  }
+ return number % 2 === 0 || false
 }
 
 module.exports = {
@@ -176,3 +201,4 @@ module.exports = {
   Seasons,
   Car,
 }
+
